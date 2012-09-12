@@ -40,10 +40,18 @@ module ActiveModel
       @options[:unique_values] = {}
 
       array = serializable_array.map do |item|
-        if item.respond_to?(:serializable_hash)
+        if item.is_a?(::ActiveModel::Serializer)
+          # serialize AMS using as_json to allow options
+          # turn off root for individual items
+          item.as_json(options.merge(:root => false))
+        elsif item.is_a?(::ActiveModel::ArraySerializer)
+          # serialize AMS using as_json to allow options
+          item.as_json(options)
+        elsif item.respond_to?(:serializable_hash)
+          # otherwise, prefer serializable_hash over as_json if available
           item.serializable_hash
         else
-          item.as_json
+          item.as_json(options)
         end
       end
 
