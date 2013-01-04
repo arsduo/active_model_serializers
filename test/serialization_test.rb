@@ -14,12 +14,6 @@ class RenderJsonTest < ActionController::TestCase
     end
   end
 
-  class JsonOptionRenderable
-    def as_json(options={})
-      options[:test_data]
-    end
-  end
-
   class JsonSerializer
     def initialize(object, options={})
       @object, @options = object, options
@@ -163,7 +157,7 @@ class RenderJsonTest < ActionController::TestCase
     end
 
     def render_json_array_with_options
-      render :json => [JsonOptionRenderable.new], :test_data => {:hello => true}
+      render :json => [Option.new], :test_data => {:hello => true}
     end
 
     def render_json_with_links
@@ -308,7 +302,7 @@ class RenderJsonTest < ActionController::TestCase
 
   def test_render_json_array_with_options
     get :render_json_array_with_options
-    assert_match '{"test":[{"hello":true}]}', @response.body
+    assert_match '{"test_data":[{"hello":true}]}', @response.body
   end
 
   def test_render_json_with_links

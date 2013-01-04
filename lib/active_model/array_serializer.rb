@@ -35,9 +35,10 @@ module ActiveModel
       end
     end
 
-    def as_json(*args)
+    def as_json(options = {}, *args)
       @options[:hash] = hash = {}
       @options[:unique_values] = {}
+      options = options.merge(@options)
 
       array = serializable_array.map do |item|
         if item.is_a?(::ActiveModel::Serializer)

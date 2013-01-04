@@ -157,3 +157,14 @@ class Attachment < Model
     @attributes[:edible]
   end
 end
+
+class Option; end
+
+class OptionSerializer < ActiveModel::Serializer
+  def as_json(options={})
+    puts "Options! #{options.inspect}"
+    options[:test_data]
+  end
+end
+
+
